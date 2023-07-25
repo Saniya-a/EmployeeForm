@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering;
+@using HtmlHelpers.BeginCollectionItemCore;
+@model EmployeeAddress
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+<tr>
+    @using (Html.BeginCollectionItem("AddressList"))
+    {
+        <input hidden asp-for="@Model.AddressId" id="addressId"/>
+        <td>
+            <select class="size" asp-for="@Model.AddressTypeId" asp-items="@(new SelectList(Model.AddressTypes, "Id", "Name", Model.AddressTypeId))">
+                <option disabled selected>Select AddressType</option>
+            </select>
+        </td>
+        <td>
+            <select class="country size" asp-for="@Model.CountryId" asp-items="@(new SelectList(Model.Countries, "Id", "Name",Model.CountryId))">
+                <option disabled selected>Select Country</option>
+            </select>
+        </td>
+        <td>
+            <select class="state size" asp-for="@Model.StateId" asp-items="@(new SelectList(Model.States, "Id", "Name",Model.CountryId))">
+                <option disabled selected>Select Country</option>
+            </select>
+        </td>
+        <td>
+            <input type="text" asp-for="@Model.Address1" class="form-control" required />
+        </td>
+        <td>
+            <input type="text" asp-for="@Model.Address2" class="form-control" />
+        </td>
+        <td>
+            <input type="text" asp-for="@Model.City" class="form-control" required />
+        </td>
+        <td>
+            <input id="zipcode" type="text" asp-for="@Model.ZipCode" class="form-control" required />
+        </td>
+        <td>
+            <button class="btn btn-danger btn-sm remove-row"><i class="bi bi-trash-fill"></i></button>
+        </td>
+
+    }
+
+</tr>
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+        // Country dropdown change event
+        $('.country').change(function () {
+            var $row = $(this).closest('tr');
+            var countryId = $(this).val();
+            var $stateSelect = $row.find('.state');
+
+            // Make AJAX request to fetch states
+            $.ajax({
+                url: '@Url.Action("GetStatesByCountry", "Employee")',
+                type: 'GET',
+                data: { countryId: countryId },
+                success: function (result) {
+                    // Clear existing options
+                    $stateSelect.empty();
+                    $stateSelect.append($('<option disabled selected>Select State</option>'));
+                    // Add new options based on the retrieved states
+                    $.each(result, function (index, state) {
+                        $stateSelect.append($('<option></option>').val(state.id).text(state.name));
+                    });
+                }
+            });
+        });
+    });
+</script>

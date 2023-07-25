@@ -1,0 +1,206 @@
+﻿@model Employee
+
+
+@{
+    ViewData["Title"] = "Create Employee";
+    var errorMessage = TempData["errorMessage"]?.ToString();
+}
+<h3>@ViewData["Title"]?.ToString()</h3>
+
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div class="alert alert-danger">
+        <b>Error: </b>@errorMessage
+        <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@using (Html.BeginForm("Create", "Employee", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    <div class="row mb-3 mt-3">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-4">
+        <!-- First Name Field -->
+        <div class="form-group">
+            <label for="FirstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" asp-for="FirstName" placeholder="First Name" id="FirstName" required>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <!-- Last Name Field -->
+        <div class="form-group">
+            <label for="LastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" asp-for="LastName" placeholder="Last Name" id="LastName" required>
+        </div>
+    </div>
+</div>
+    <div class="row mb-3 mt-3">
+    <div class="col-md-3">
+
+    </div>
+    <div class="col-md-4">
+        <!-- Email Field -->
+        <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input type="text" class="form-control" id="email" asp-for="Email" placeholder="Enter email" required>
+        </div>
+    </div>      
+    <div class="col-md-4">
+        <!-- Contact Number Field -->
+        <div class="form-group">
+            <label for="phoneNumber" class="form-label">Contact Number</label>
+            <input type="text" class="form-control" id="phoneNumber" asp-for="MobileNumber" placeholder="Enter Contact Number" required>
+        </div>
+    </div>
+ </div>
+    <div class="row mb-3 mt-3">
+    <div class="col-md-2">
+        <!-- Profile Picture Field -->
+        <div class="form-group">
+            <label for="profilePic" class="form-label">Profile Picture</label>
+            <input type="file" class="form-control" id="profilePic" name="files" asp-for="Image" accept="image/*">
+            <small id="imageError" class="text-danger" style="display: none;">Please choose a valid image file.</small>
+        </div>
+    </div>
+        <div class="col-md-1 mt-4">
+        </div>
+    <div class="col-md-4">
+        <!-- Birthdate Field -->
+        <div class="form-group">
+            <label for="datepicker" class="form-label">Birthdate</label>
+            <input id="datepicker" type="date" class="form-control" asp-for="DateOfBirth" placeholder="Birthdate" required>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <!-- Gender Field -->
+        <div class="form-group">
+            <label class="form-label">Gender</label>
+            <div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="Gender" value="1">
+                    <label class="form-check-label" for="inlineRadio1">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="Gender" value="2">
+                    <label class="form-check-label" for="inlineRadio2">Female</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="Gender" value="3">
+                    <label class="form-check-label" for="inlineRadio3">Other</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+     <div class="form-check col-md-4 mb-3 mt-3">
+        <label class="form-check-label" for="flexCheckDefault">
+            Is Active?
+        </label>
+        <input class="form-check-input" type="checkbox" asp-for="IsActive" value="" id="flexCheckDefault">
+    </div>
+    <div class="col-md-4 mb-3 mt-3">
+        <select class="country" asp-for="@Model.CategoryId" asp-items="@(new SelectList(Model.CategoryList, "Id", "Name"))">
+            <option disabled selected>Select Category</option>
+        </select>
+    </div>
+</div>
+    
+    
+<div>
+        <div class="pt-1 form-group mb-3 mt-3">
+        <button id="addAddressBtn" type="button" class="btn btn-primary" style="width:150px">Add Address</button>
+    </div>
+        <div class="pt-1 mb-3 mt-3">
+            <table id="addressTable" style="width:100%" class="table table-bordered table-sm text-center">
+            <thead>
+                <tr>
+                    <th style="width:10%">Address Type</th>
+                    <th style="width:8%">Country</th>
+                    <th style="width:8%">State</th>
+                    <th>Address 1</th>
+                    <th>Address 2</th>
+                    <th style="width:8%">City</th>
+                    <th style ="width:8%">ZipCode</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+<a asp-controller="Employee" asp-action="Index" class="btn btn-secondary" style="width:150px">Back to list</a>
+}
+
+
+
+
+
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css">
+
+
+    <script>
+        $(document).ready(function () {
+            $('#addAddressBtn').click(function () {
+                $.ajax({
+                    url: '@Url.Action("AddAddressRow", "Employee")',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#addressTable tbody').append(data);
+                    }
+                });
+            });
+
+            $('#addressTable').on('click', '.remove-row', function () {
+                $(this).closest('tr').remove();
+            });
+        });
+    </script>
+    <script>
+
+        var profilePicInput = document.getElementById('profilePic');
+        var imageErrorElement = document.getElementById('imageError');
+
+        profilePicInput.addEventListener('change', function () {
+            var file = profilePicInput.files[0];
+
+            // Check if a file is selected and if it is an image
+            if (file && file.type.startsWith('image/')) {
+                // Hide the error message if an image file is selected
+                imageErrorElement.style.display = 'none';
+            } else {
+                // Show the error message if the selected file is not an image
+                imageErrorElement.style.display = 'block';
+            }
+        });
+
+        
+        var phoneNumberPattern = /^\d{10}$/;
+
+        // Get the phone number input field
+        var phoneNumberInput = document.getElementById('phoneNumber');
+
+        // Add an event listener to the input field for validation
+        phoneNumberInput.addEventListener('input', function () {
+            var phoneNumber = phoneNumberInput.value;
+
+            // Validate the phone number using the regular expression
+            if (phoneNumberPattern.test(phoneNumber)) {
+                // Valid phone number
+                phoneNumberInput.setCustomValidity('');
+            } else {
+                // Invalid phone number
+                phoneNumberInput.setCustomValidity('Please enter a valid phone number.');
+            }
+        });
+    </script>
+}
+

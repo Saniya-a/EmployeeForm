@@ -1,0 +1,99 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering;
+@using HtmlHelpers.BeginCollectionItemCore;
+@model EmployeeAddress;
+
+
+<tr>
+    @using (Html.BeginCollectionItem("AddressList"))
+    {
+        <td style="width:8%">
+
+             <select class="size" asp-for="@Model.AddressTypeId" asp-items="@(new SelectList(Model.AddressTypes, "Id", "Name"))">
+                <option disabled selected>Address Type</option>
+            </select>
+        </td >
+        <td style ="width:8%">
+            <select class="country size" asp-for="@Model.CountryId" asp-items="@(new SelectList(Model.Countries, "Id", "Name"))">
+                <option disabled selected>Country</option>
+            </select>
+        </td>
+        <td style="width:8%">
+            <select class="state size"  asp-for="@Model.StateId">
+                <option disabled selected>State</option>
+            </select>
+        </td>
+        <td>
+            <input type="text" asp-for="@Model.Address1" class="form-control form-control-sm address1" required />
+        </td>
+        <td>
+            <input type="text" asp-for="@Model.Address2" class="form-control form-control-sm address2" />
+        </td>
+        <td style="width:8%">
+            <input type="text" asp-for="@Model.City" class="form-control form-control-sm" required />
+        </td>
+        <td style="width:8%">
+            <input type="text" id="zipcode" asp-for="@Model.ZipCode" class="form-control input-sm" required />
+        </td>
+        <td>
+            <button class="btn btn-danger btn-sm remove-row"><i class="bi bi-trash-fill"></i></button>
+        </td>
+
+    }
+
+</tr>
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+        // Country dropdown change event
+        $('.country').change(function () {
+            var $row = $(this).closest('tr');
+            var countryId = $(this).val();
+            var $stateSelect = $row.find('.state');
+
+            // Make AJAX request to fetch states
+            $.ajax({
+                url: '@Url.Action("GetStatesByCountry", "Employee")',
+                type: 'GET',
+                data: { countryId: countryId },
+                success: function (result) {
+                    // Clear existing options
+                    $stateSelect.empty();
+                    $stateSelect.append($('<option disabled selected>Select State</option>'));
+                    // Add new options based on the retrieved states
+                    $.each(result, function (index, state) {
+                        $stateSelect.append($('<option></option>').val(state.id).text(state.name));
+                    });
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        
+        $(".address1").off("change").on("change", function () {
+            debugger
+        // Listen for changes in the "AGING END" fields
+            var currentRow = $(this).closest("tr");
+            var currentRowAgingStart = parseInt($(this).val());
+            var previousRow = currentRow.prev();
+            var previousRowAgingEnd = previousRow.find(".address2");
+            var prevValue = parseInt(previousRowAgingEnd.val());
+
+            if (!isNaN(currentRowAgingStart) && !isNaN(previousRowAgingEnd)) {
+                var expectedAgingStart = previousRowAgingEnd + 1;
+
+                if (currentRowAgingStart !== expectedAgingStart) {
+                    currentRow.find(".address1").addClass("field-error");
+                } 
+                else {
+                    currentRow.find(".address1").removeClass("field-error");
+                }
+            }
+        });
+    });
+
+</script>

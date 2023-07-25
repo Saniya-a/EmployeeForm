@@ -1,0 +1,109 @@
+﻿@model Employee
+@*
+*@
+
+
+<div class="row">
+    <div class="col-3">
+        <img id="previewImage" src="#" alt="Selected Image" style="display: none;">
+    </div>
+    <div class="col-9">
+        <div class="row mb-3 mt-3">
+                <!-- First Name Field -->
+                <div class="form-group col-md-6">
+                    <label for="FirstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" asp-for="FirstName" placeholder="First Name" id="FirstName" required>
+                </div>
+                <!-- Last Name Field -->
+                <div class="form-group col-md-6">
+                    <label for="LastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" asp-for="LastName" placeholder="Last Name" id="LastName" required>
+                </div>
+        </div>
+        <div class="row mb-3 mt-3">
+            <div class="col-md-6">
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="text" class="form-control" id="email" asp-for="Email" placeholder="Enter email" required>
+                </div>
+                <!-- Contact Number Field -->
+                <div class="form-group">
+                    <label for="phoneNumber" class="form-label">Contact Number</label>
+                    <input type="text" class="form-control" id="phoneNumber" asp-for="MobileNumber" placeholder="Enter Contact Number" required>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-3 mt-3">
+    <div class="col-md-2">
+        <!-- Profile Picture Field -->
+        <div class="form-group">
+            <label for="profilePic" class="form-label">Profile Picture</label>
+            <input type="file" class="form-control" id="profilePic" name="files" asp-for="Image" accept="image/*">
+            <small id="imageError" class="text-danger" style="display: none;">Please choose a valid image file.</small>
+        </div>
+    </div>
+    <div class="col-md-1 mt-4">
+    </div>
+    <div class="col-md-4">
+        <!-- Birthdate Field -->
+        <div class="form-group">
+            <label for="datepicker" class="form-label">Birthdate</label>
+            <input id="datepicker" type="date" class="form-control" asp-for="DateOfBirth" placeholder="Birthdate" required>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <!-- Gender Field -->
+        <div class="form-group">
+            <label class="form-label">Gender</label>
+            <div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="Gender" value="1">
+                    <label class="form-check-label" for="inlineRadio1">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="Gender" value="2">
+                    <label class="form-check-label" for="inlineRadio2">Female</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="Gender" value="3">
+                    <label class="form-check-label" for="inlineRadio3">Other</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Get the file input element
+    const fileInput = document.getElementById('profilePic');
+
+    // Get the image preview element
+    const imagePreview = document.getElementById('previewImage');
+
+    // Handle the file input change event
+    fileInput.addEventListener('change', function () {
+        const file = fileInput.files[0];
+
+        // Check if a file is selected
+        if (file) {
+            // Create a FileReader to read the selected image file
+            const reader = new FileReader();
+
+            // Set the image preview source when the file is loaded
+            reader.onload = function () {
+                imagePreview.src = reader.result;
+                imagePreview.style.display = 'block'; // Show the image preview
+            }
+
+            // Read the selected image file as a data URL
+            reader.readAsDataURL(file);
+        } else {
+            // No file selected, hide the image preview
+            imagePreview.src = '#';
+            imagePreview.style.display = 'none';
+        }
+    })
+</script>

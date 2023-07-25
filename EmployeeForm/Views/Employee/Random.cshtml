@@ -1,0 +1,246 @@
+﻿@model Employee
+
+<div class="row">
+    <div class="col-md-2">
+        <!-- Profile Picture Field -->
+        <div class="form-group">
+            <label for="profilePic" class="form-label">Profile Picture</label>
+            <input type="file" class="form-control" id="profilePic" accept="image/*">
+        </div>
+    </div>
+    <div class="col-md-5">
+        <!-- First Name Field -->
+        <div class="form-group">
+            <label for="FirstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" asp-for="FirstName" placeholder="First Name" id="FirstName" required>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <!-- Last Name Field -->
+        <div class="form-group">
+            <label for="LastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" asp-for="LastName" placeholder="Last Name" id="LastName" required>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-5">
+        <!-- Birthdate Field -->
+        <div class="form-group">
+            <label for="datepicker" class="form-label">Birthdate</label>
+            <input id="datepicker" type="date" class="form-control" asp-for="DateOfBirth" placeholder="Birthdate" required>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <!-- Gender Field -->
+        <div class="form-group">
+            <label class="form-label">Gender</label>
+            <div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="Gender" value="1">
+                    <label class="form-check-label" for="inlineRadio1">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="Gender" value="2">
+                    <label class="form-check-label" for="inlineRadio2">Female</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="Gender" value="3">
+                    <label class="form-check-label" for="inlineRadio3">Other</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <!-- Email Field -->
+        <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input type="text" class="form-control" id="email" asp-for="Email" placeholder="Enter email" required>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <!-- Contact Number Field -->
+        <div class="form-group">
+            <label for="phoneNumber" class="form-label">Contact Number</label>
+            <input type="text" class="form-control" id="phoneNumber" asp-for="MobileNumber" placeholder="Enter Contact Number" required>
+        </div>
+    </div>
+    <!-- Add more fields here if needed -->
+</div>
+
+
+
+
+
+
+@*
+@model EmployeeForm.Models.ViewModels.EmployeeVM
+@{
+    ViewData["Title"] = "Create Employee";
+    var errorMessage = TempData["errorMessage"]?.ToString();
+}
+<h3>@ViewData["Title"]?.ToString()</h3>
+<hr />
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div class="alert alert-danger">
+        <b>Error: </b>@errorMessage
+        <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<form class="row g-3" method="post">
+    <div class="form-group col-md-4">
+        <input type="text" class="form-control" asp-for="Employee.FirstName" placeholder="First Name">
+    </div>
+    <div class="form-group col-md-4">
+        <input type="text" class="form-control" asp-for="Employee.LastName" placeholder="Last Name">
+    </div>
+    <div class="form-group col-md-4">
+        <input id="datepicker" type="date" class="form-control" asp-for="Employee.DateOfBirth" value="@DateTime.Now.ToString("dd-MM-yyyy")" />
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group col-md-8">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="Employee.Gender" value="1">
+            <label class="form-check-label" for="inlineRadio1">Male</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="Employee.Gender" value="2">
+            <label class="form-check-label" for="inlineRadio2">Female</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="Employee.Gender" value="3">
+            <label class="form-check-label" for="inlineRadio3">Other</label>
+        </div>
+    </div>
+    <div class="form-floating mb-3 mt-3 col-md-6">
+        <input type="text" class="form-control" id="email" asp-for="Employee.Email" placeholder="Enter email" name="email">
+        <label for="email">Email</label>
+    </div>
+    <div class="col-md-6 form-floating">
+        <input type="text" class="form-control" id="phoneNumber" asp-for="Employee.MobileNumber" placeholder="Enter Contact Number">
+        <label for="phoneNumber">Contact Number</label>
+    </div>
+    <div class="form-check">
+        <label class="form-check-label" for="flexCheckDefault">
+            Is Active?
+        </label>
+        <input class="form-check-input" type="checkbox" asp-for="Employee.IsActive" value="" id="flexCheckDefault">
+    </div>
+    <select asp-for="Address.AddressTypeId" asp-items="@(new SelectList(Model.AddressTypes, "Id", "Name"))"></select>
+    <select id="CountryId" asp-for="Address.CountryId" asp-items="@(new SelectList(Model.Countries, "Id", "Name"))"></select>
+
+    <!-- State Dropdown -->
+    <select id="StateId" asp-for="Address.StateId"></select>*@
+    @*@<div class="col-md-6">
+    <label class="form-label">Address Details</label>
+    </div>
+    <select class="form-select col-md-6" size="3" aria-label="size 3 select example">
+    <option selected>Address Type</option>
+    </select>
+    <div class="form-floating col-md-6">
+    <input type="text" class="form-control" id="Country" placeholder="Select Country" name="email">
+    <label for="email">Email</label>
+    </div>
+    <div class="col-md-6 form-floating">
+    <input type="text" class="form-control" id="phoneNumber" placeholder="Enter Contact Number">
+    <label for="phoneNumber">Contact Number</label>
+    </div>*@
+    @*<div class="mb-3">
+        <div class="col-lg-12 d-grid">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            // Country dropdown change event
+            $('#CountryId').change(function () {
+                var countryId = $(this).val();
+
+                // Make AJAX request to fetch states
+                $.ajax({
+                    url: '@Url.Action("GetStatesByCountry", "Employee")',
+                    type: 'GET',
+                    data: { countryId: countryId },
+                    success: function (result) {
+                        // Clear existing options
+                        $('#StateId').empty();
+
+                        // Add new options based on the retrieved states
+                        $.each(result, function (index, state) {
+                            debugger
+                            $('#StateId').append($('<option></option>').val(state.id).text(state.name));
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+}
+
+
+
+@using (Html.BeginForm("Create", "Employee", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Employee.FirstName)
+            @Html.TextBoxFor(model => model.Employee.FirstName)
+            @Html.ValidationMessageFor(model => model.Employee.FirstName)
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Employee.LastName)
+            @Html.TextBoxFor(model => model.Employee.LastName)
+            @Html.ValidationMessageFor(model => model.Employee.LastName)
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Employee.DateOfBirth)
+            @Html.TextBoxFor(model => model.Employee.DateOfBirth,new { @class = "datepicker", @id = "txtDateOfBirth" })
+            @Html.ValidationMessageFor(model => model.Employee.DateOfBirth)
+        </div>
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.Employee.Gender)
+        <br />
+        @Html.RadioButtonFor(model => model.Employee.Gender, "1") Male
+        @Html.RadioButtonFor(model => model.Employee.Gender, "2") Female
+        @Html.RadioButtonFor(model => model.Employee.Gender, "3") Other
+        @Html.ValidationMessageFor(model => model.Employee.Gender)
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.Employee.Email)
+        @Html.TextBoxFor(model => model.Employee.Email)
+        @Html.ValidationMessageFor(model => model.Employee.Email)
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.Employee.MobileNumber)
+        @Html.TextBoxFor(model => model.Employee.MobileNumber, new { id = "phoneNumber" })
+        @Html.ValidationMessageFor(model => model.Employee.MobileNumber)
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.Employee.IsActive)
+        @Html.CheckBoxFor(model => model.Employee.IsActive)
+    </div>
+
+    <div>
+        <input type="submit" value="Submit" />
+    </div>
+}
+*@
